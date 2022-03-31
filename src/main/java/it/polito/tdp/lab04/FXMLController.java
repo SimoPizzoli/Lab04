@@ -1,8 +1,6 @@
 package it.polito.tdp.lab04;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.lab04.model.Corso;
@@ -103,7 +101,23 @@ public class FXMLController {
 
     @FXML
     void handleIscrivi(ActionEvent event) {
+    	Studente studente = null;
+    	Corso corso = null;
     	
+    	for(Studente s : model.getTuttiGliStudenti())
+    		if(s.getMatricola().equals(txtMatricola.getText()))
+    			studente = s;
+    	corso = model.getCorso(cmbCorsi.getValue());
+    	
+    	if(studente == null || corso == null) {
+    		lblErrore.setText("Errore");
+    		return;
+    	}
+    	boolean inserito = model.inscriviStudenteACorso(studente, corso);
+    	if(inserito == true)
+    		txtRisultato.setText("Studente iscritto al corso!");
+    	else
+    		txtRisultato.setText("Studente già iscritto a questo corso");
     }
 
     @FXML

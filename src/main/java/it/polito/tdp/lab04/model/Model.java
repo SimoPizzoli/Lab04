@@ -31,7 +31,13 @@ public class Model {
 		return this.studenteDao.getCorsiByStudente(matricola);
 	}
 	
-	public Corso getCorso(Corso corso) {
+	public Corso getCorso(String corso) {
 		return this.corsoDao.getCorso(corso);
+	}
+	
+	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
+		if(this.studenteDao.getCorsiByStudente(studente.getMatricola()).contains(corso))
+			return false;
+		return this.corsoDao.inscriviStudenteACorso(studente, corso);
 	}
 }

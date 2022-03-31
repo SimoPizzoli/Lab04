@@ -59,10 +59,10 @@ public class CorsoDAO {
 	/*
 	 * Dato un codice insegnamento, ottengo il corso
 	 */
-	public Corso getCorso(Corso corso) {
+	public Corso getCorso(String corso) {
 		// TODO
 		for(Corso c : getTuttiICorsi())
-			if(corso.equals(corso))
+			if(c.getNome().equals(corso))
 				return c;
 		return null;
 	}
@@ -87,6 +87,10 @@ public class CorsoDAO {
 			while(rs.next()) {
 				result.add(new Studente(rs.getString("matricola"), rs.getString("cognome"), rs.getString("nome"), rs.getString("CDS")));
 			}
+			
+			conn.close();
+			rs.close();
+			st.close();
 				
 		}catch(SQLException e) {
 			System.err.println("Errore nel DAO");
@@ -101,6 +105,24 @@ public class CorsoDAO {
 	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
 		// TODO
 		// ritorna true se l'iscrizione e' avvenuta con successo
+		final String sql = "INSERT INTO iscrizione VALUES (?,?)";
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, studente.getMatricola());
+			st.setString(2, corso.getCodins());
+			ResultSet rs = st.executeQuery();
+			
+			conn.close();
+			rs.close();
+			st.close();
+			
+			return true;
+			
+		} catch(SQLException e) {
+			System.err.println("Errore nel DAO");
+			e.printStackTrace();
+		}
 		return false;
 	}
 
